@@ -1,6 +1,8 @@
 为了方便自己刷题，fork了一下大佬的仓库，侵删。
 原创作者：（[程序员Carl](https://github.com/youngyangyang04)）
-原仓库地址： [在线阅读](http://programmercarl.com/)
+原仓库：[仓库](https://github.com/youngyangyang04/leetcode-master)
+作者非常牛的网站： [刷题网站](http://programmercarl.com/)
+
 
 ## 数组 
 
