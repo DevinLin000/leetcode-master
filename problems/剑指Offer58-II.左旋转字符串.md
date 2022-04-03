@@ -1,10 +1,3 @@
-<p align="center">
-<a href="https://programmercarl.com/other/kstar.html" target="_blank">
-  <img src="https://code-thinking-1253855093.file.myqcloud.com/pics/20210924105952.png" width="1000"/>
-</a>
-<p align="center"><strong><a href="https://mp.weixin.qq.com/s/tqCxrMEU-ajQumL1i8im9A">参与本项目</a>，贡献其他语言版本的代码，拥抱开源，让更多学习算法的小伙伴们收益！</strong></p>
-
-
 > 反转个字符串还有这么多用处？
 
 # 题目：剑指Offer58-II.左旋转字符串
@@ -53,18 +46,34 @@
 
 思路明确之后，那么代码实现就很简单了
 
-C++代码如下：
+JS代码如下：
 
-```CPP
-class Solution {
-public:
-    string reverseLeftWords(string s, int n) {
-        reverse(s.begin(), s.begin() + n);
-        reverse(s.begin() + n, s.end());
-        reverse(s.begin(), s.end());
-        return s;
-    }
+```js
+/**
+ * @param {string} s
+ * @param {number} n
+ * @return {string}
+ */
+var reverseLeftWords = function(s, n) {
+  let strArr = Array.from(s)
+  reverse2(strArr, 0, n-1)
+  reverse2(strArr, n, strArr.length - 1)
+  reverse2(strArr, 0, strArr.length - 1)
+
+  return strArr.join('')
 };
+
+// 将整个字符串翻转。这里的字符串已经被转换为了数组
+function reverse2(arr, start, end) {
+  let left = start, right = end
+
+  while(left < right) {
+    [arr[left], arr[right]] = [arr[right], arr[left]]
+    left++
+    right--
+  }
+
+}
 ```
 是不是发现这代码也太简单了，哈哈。
 
@@ -89,211 +98,3 @@ public:
 其实使用substr 和 反转 时间复杂度是一样的 ，都是$O(n)$，但是使用substr申请了额外空间，所以空间复杂度是$O(n)$，而反转方法的空间复杂度是$O(1)$。
 
 **如果想让这套题目有意义，就不要申请额外空间。**
-
-
-## 其他语言版本
-
-Java：
-```java
-class Solution {
-    public String reverseLeftWords(String s, int n) {
-        int len=s.length();
-        StringBuilder sb=new StringBuilder(s);
-        reverseString(sb,0,n-1);
-        reverseString(sb,n,len-1);
-        return sb.reverse().toString();
-    }
-     public void reverseString(StringBuilder sb, int start, int end) {
-        while (start < end) {
-            char temp = sb.charAt(start);
-            sb.setCharAt(start, sb.charAt(end));
-            sb.setCharAt(end, temp);
-            start++;
-            end--;
-            }
-        }
-}
-```
-
-python: 
-
-```python
-# 方法一：可以使用切片方法
-class Solution:
-    def reverseLeftWords(self, s: str, n: int) -> str:
-        return s[n:] + s[0:n]
-```
-```python    
-# 方法二：也可以使用上文描述的方法，有些面试中不允许使用切片，那就使用上文作者提到的方法
-class Solution:
-    def reverseLeftWords(self, s: str, n: int) -> str:
-        s = list(s)
-        s[0:n] = list(reversed(s[0:n]))
-        s[n:] = list(reversed(s[n:]))
-        s.reverse()
-        
-        return "".join(s)
-
-```
-
-```python
-# 方法三：如果连reversed也不让使用，那么自己手写一个
-class Solution:
-    def reverseLeftWords(self, s: str, n: int) -> str:
-        def reverse_sub(lst, left, right):
-            while left < right:
-                lst[left], lst[right] = lst[right], lst[left]
-                left += 1
-                right -= 1
-        
-        res = list(s)
-        end = len(res) - 1
-        reverse_sub(res, 0, n - 1)
-        reverse_sub(res, n, end)
-        reverse_sub(res, 0, end)
-        return ''.join(res)
-
-# 同方法二
-# 时间复杂度：O(n)
-# 空间复杂度：O(n)，python的string为不可变，需要开辟同样大小的list空间来修改
-
-```
-
-```python 3
-#方法四：考虑不能用切片的情况下，利用模+下标实现
-class Solution:
-    def reverseLeftWords(self, s: str, n: int) -> str:
-        new_s = ''
-        for i in range(len(s)):
-            j = (i+n)%len(s)
-            new_s = new_s + s[j]
-        return new_s
-
-```
-
-Go：
-
-```go
-func reverseLeftWords(s string, n int) string {
-    b := []byte(s)
-    // 1. 反转前n个字符
-    // 2. 反转第n到end字符
-    // 3. 反转整个字符
-    reverse(b, 0, n-1)
-    reverse(b, n, len(b)-1)
-    reverse(b, 0, len(b)-1)
-    return string(b)
-}
-// 切片是引用传递
-func reverse(b []byte, left, right int){
-    for left < right{
-        b[left], b[right] = b[right],b[left]
-        left++
-        right--
-    }
-}
-```
-
-
-JavaScript：
-
-```javascript
-var reverseLeftWords = function(s, n) {
-  const length = s.length;
-  let i = 0;
-  while (i < length - n) {
-    s = s[length - 1] + s;
-    i++;
-  }
-  return s.slice(0, length);
-};
-```
-
-版本二（在原字符串上操作）：
-
-```js
-/**
- * @param {string} s
- * @param {number} n
- * @return {string}
- */
-var reverseLeftWords = function (s, n) {
-    /** Utils */
-    function reverseWords(strArr, start, end) {
-        let temp;
-        while (start < end) {
-            temp = strArr[start];
-            strArr[start] = strArr[end];
-            strArr[end] = temp;
-            start++;
-            end--;
-        }
-    }
-    /** Main code */
-    let strArr = s.split('');
-    let length = strArr.length;
-    reverseWords(strArr, 0, length - 1);
-    reverseWords(strArr, 0, length - n - 1);
-    reverseWords(strArr, length - n, length - 1);
-    return strArr.join('');
-};
-```
-
-TypeScript：
-
-```typescript
-function reverseLeftWords(s: string, n: number): string {
-    /** Utils */
-    function reverseWords(strArr: string[], start: number, end: number): void {
-        let temp: string;
-        while (start < end) {
-            temp = strArr[start];
-            strArr[start] = strArr[end];
-            strArr[end] = temp;
-            start++;
-            end--;
-        }
-    }
-    /** Main code */
-    let strArr: string[] = s.split('');
-    let length: number = strArr.length;
-    reverseWords(strArr, 0, length - 1);
-    reverseWords(strArr, 0, length - n - 1);
-    reverseWords(strArr, length - n, length - 1);
-    return strArr.join('');
-};
-```
-
-Swift:
-
-```swift
-func reverseLeftWords(_ s: String, _ n: Int) -> String {
-    var ch = Array(s)
-    let len = ch.count
-    // 反转区间[0, n - 1]
-    reverseString(&ch, startIndex: 0, endIndex: n - 1)
-    // 反转区间[n, len - 1]
-    reverseString(&ch, startIndex: n, endIndex: len - 1)
-    // 反转区间[0, len - 1]，也就是整个字符串反转
-    reverseString(&ch, startIndex: 0, endIndex: len - 1)
-    return String(ch)
-}
-
-func reverseString(_ s: inout [Character], startIndex: Int, endIndex: Int)  {
-    var start = startIndex
-    var end = endIndex
-    while start < end {
-        (s[start], s[end]) = (s[end], s[start])
-        start += 1
-        end -= 1
-    }
-}
-```
-
-
-
-
-
-
------------------------
-<div align="center"><img src=https://code-thinking.cdn.bcebos.com/pics/01二维码一.jpg width=500> </img></div>
